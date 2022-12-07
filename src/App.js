@@ -57,6 +57,9 @@ import HolyPlaces from "./Pages/AddHolyPlaces"
 import Transaction from "./Pages/Transaction";
 import Transactiondetails from "./Components/DisplayItems/Transactiondetails"
 import Location from "./Pages/AllUsersLocation"
+import AddVisatype from "./Pages/AddVisatype"
+import AllVisatypes from "./Pages/AllVisatypes"
+import EditVisaType from "./Components/DisplayItems/EditVisaType"
 function App() {
   return (
     <>
@@ -88,15 +91,13 @@ function App() {
             <Route path="/dashboard/Transactions" element={<Transaction />} />
             <Route path="/dashboard/show-transanction/:productId" element={<Transactiondetails />} />
             <Route path="/dashboard/UserLocations" element={<Location />} />
-
-            
             <Route path="/dashboard/book-room/:productId" element={<Bookroom />} />
             <Route path="/dashboard/book-vehicle/:productId" element={<Bookvehicle />} />
-
             <Route path="/dashboard/Confirm-Room/:productId" element={<Bookdetails />} />
             <Route path="/dashboard/Confirm-Vehicle/:productId" element={<Vehicledetails />} />
-
             <Route path="/dashboard/banners" element={<AllBanners />} />
+            <Route path="/dashboard/visaTypes" element={<AllVisatypes />} />
+
             <Route
               path="/dashboard/productCarts"
               element={<AllProductCarts />}
@@ -111,7 +112,7 @@ function App() {
               path="/dashboard/visa-requests"
               element={<AllVisaRequests />}
             />
-
+            <Route path="/dashboard/add-visatype" element={<AddVisatype />} />
             <Route path="/dashboard/add-video" element={<AddVideo />} />
             <Route path="/dashboard/add-user" element={<AddUser />} />
             <Route path="/dashboard/add-banner" element={<AddBanner />} />
@@ -122,8 +123,9 @@ function App() {
             <Route path="/dashboard/add-dua" element={<AddSupplication />} />
             <Route path="/dashboard/add-group" element={<AddGroup />} />
             <Route path="/dashboard/edit-family/:userId" element={<EditFamily />} />
-
             <Route path="/dashboard/edit-user/:userId" element={<EditUser />} />
+            <Route path="/dashboard/edit-visa/:userId" element={<EditVisaType />} />
+
             <Route path="/dashboard/edit-book/:bookId" element={<EditBook />} />
             <Route
               path="/dashboard/edit-product/:productId"

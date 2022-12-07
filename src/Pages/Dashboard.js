@@ -110,8 +110,8 @@ useEffect(()=>{
 },[bookRequests])
  
   return (
-    <Card>
-      <div className="w-[90%] max-w-5xl h-full mx-auto">
+    <Card >
+      <div className="w-[90%] max-w-5xl h-full mx-auto" >
         <header className="flex flex-col gap-2 justify-start md:min-h-max ">
           <h1 className="text-4xl">Overview</h1>
           <p className="text-gray-400">{currentDate}</p>

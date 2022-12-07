@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useFormik } from "formik";
+import { useFormik, yupToFormErrors } from "formik";
 import { useNavigate } from "react-router-dom";
 import Input from "../Components/UI/Input";
 import Card from "../Components/UI/Card";
@@ -23,7 +23,8 @@ const AddUser = () => {
        .email("Enter a valid email")
       .required("Email is required"),
     contact:yup.number("Enter Valid Number")
-    .required("A phone number is required")
+    .required("A phone number is required"),
+    cnic:yup.string("Enter CNIC").required("A phone number is required").matches(/^[0-9]{5}-[0-9]{7}-[0-9]$/, "Wrong CNIC")
   });
 
   
@@ -52,6 +53,7 @@ const AddUser = () => {
       address: "",
       profilePic: "",
       password: "",
+      cnic:""
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -65,7 +67,8 @@ const AddUser = () => {
         values.contact &&
         values.address &&
         values.password &&
-        values.profilePic
+        values.profilePic &&
+        values.cnic
       ) {
         await userService.addUser(values);
         navigate("/dashboard/users");
@@ -158,6 +161,17 @@ const AddUser = () => {
               name="address"
               onChange={formik.handleChange}
               value={formik.values.address}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                id="cnic"
+                label="CNIC - With Dashes"
+              name="cnic"
+              onChange={formik.handleChange}
+              value={formik.values.cnic}
+              error={formik.touched.cnic && Boolean(formik.errors.cnic)}
+                helperText={formik.touched.cnic && formik.errors.cnic}
               />
             <TextField
                 margin="normal"

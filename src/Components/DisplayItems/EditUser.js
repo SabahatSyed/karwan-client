@@ -9,6 +9,7 @@ import Backdrop from "../UI/BackdropModal";
 import useFetchDoc from "../../hooks/useFetchDoc";
 import useUser from "../../hooks/useUser";
 import userService from "../../api/users.api";
+import * as yup from "yup";
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -23,6 +24,14 @@ const EditUser = () => {
   const { updateUser, uploadUserImage, imagePath } = useUser();
   const [profilePic, setProfilePic] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const validationSchema = yup.object({
+    email: yup.string("Enter your email")
+       .email("Enter a valid email")
+      .required("Email is required"),
+    contact:yup.number("Enter Valid Number")
+    .required("A phone number is required"),
+    cnic:yup.string("Enter CNIC").required("A phone number is required").matches(/^[0-9]{5}-[0-9]{7}-[0-9]$/, "Wrong CNIC")
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -31,8 +40,10 @@ const EditUser = () => {
       contact: selectedUser?.contact,
       address: selectedUser?.address,
       profilePic: selectedUser?.profilePic,
+      cnic:selectedUser?.cnic
     },
     enableReinitialize: true,
+    validationSchema: validationSchema,
 
     onSubmit: async (values) => {
       console.log(values);
@@ -117,6 +128,16 @@ const EditUser = () => {
               onChange={formik.handleChange}
               value={formik.values.address}
             />
+            <Input
+                width="full"
+                type="text"
+                label="CNIC - Without Dashes"
+              name="cnic"
+              onChange={formik.handleChange}
+              value={formik.values.cnic}
+              error={formik.touched.cnic && Boolean(formik.errors.cnic)}
+              helperText={formik.touched.cnic && formik.errors.cnic}
+              />
             {/* <TextArea
             rows={1}
             type="text"

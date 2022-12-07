@@ -17,7 +17,7 @@ const EditProduct = () => {
   const [showModal, setShowModal] = useState(false);
   const [productPic, setProductPic] = useState();
   
-  const [room,setroom]=useState({name:"",contact:"",relation:""})
+  const [room,setroom]=useState({name:"",contact:"",relation:"",cnic:""})
   const { docData: product, isloading } = useFetchDoc(
     `/get-user/${userId}`
   );
@@ -134,15 +134,40 @@ const EditProduct = () => {
 
                 
               </select>
-            
+              <label className="text-secondary">CNIC:</label>
+
+              <input
+              style={{width:"25%",marginLeft:20,marginRight:20}}
+              type="text"
+              label="CNIC:"
+              name="room.cnic"
+              onChange={(e) => {
+                
+                    var value={cnic:e.target.value}
+                    setroom(shopCart => ({
+                    ...shopCart,
+                    ...value
+                  }))
+                  
+                
+                
+                
+                }}
+              value={room.cnic}
+            />
             <Button
               type="button" onClick={()=>{
-                if(Rooms.length>0){
-                  setRooms([...Rooms,room]);
+                if(!room.cnic.match(/^[0-9]{5}-[0-9]{7}-[0-9]$/)){
+                  alert("wrong CNIC")
+                }else{
+                  if(Rooms.length>0){
+                    setRooms([...Rooms,room]);
+                  }
+                  else{setRooms([room])}
+                  console.log("saa",Rooms)
+                  setroom({name:"",contact:"",relation:"",cnic:""})
                 }
-                else{setRooms([room])}
-                console.log("saa",Rooms)
-                setroom({name:"",contact:"",relation:""})
+                
               }}>
               <div className="text-base p-1">Add</div>
             </Button>
@@ -156,6 +181,8 @@ const EditProduct = () => {
             <p style={{marginRight:20}}>{item.contact}</p>
             <label className="text-secondary" style={{marginRight:10,fontWeight:'bold'}}>Relation: </label>
             <p style={{marginRight:20}}>{item.relation}</p>
+            <label className="text-secondary" style={{marginRight:10,fontWeight:'bold'}}>CNIC: </label>
+            <p style={{marginRight:20}}>{item.cnic}</p>
             <Button
               type="button" onClick={()=>{
               setroom(item)
