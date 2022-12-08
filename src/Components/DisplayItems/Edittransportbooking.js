@@ -45,6 +45,7 @@ const EditProductCart = () => {
  const cancelAppointment=async()=>{
    
    const res=await productCartService.deleteProductCart(selectedProductCart._id)
+   navigate("/dashboard/transportbookings");
 
 }
   useEffect(() => {
