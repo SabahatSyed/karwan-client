@@ -9,9 +9,9 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import logo from "../../Assets/Images/logo.png";
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import { SvgIcon } from '@mui/material';
-import { FaUsers,FaUserPlus,FaPassport,FaUsersCog,FaSign,FaVideo,FaYoutube,FaPrayingHands,FaQuran
+import { FaUserAlt,FaUsers,FaUserPlus,FaPassport,FaUsersCog,FaSign,FaVideo,FaYoutube,FaPrayingHands,FaQuran
 ,FaClipboardList,FaHotel,FaCaravan,FaCarAlt,FaShoppingCart,FaStoreAlt,FaTaxi,FaBook,FaBookReader,
-FaFolderPlus,FaHouseUser,FaRegStar,FaSignOutAlt,FaKaaba,FaMoneyCheckAlt,FaSearchLocation } from "react-icons/fa";
+FaFolderPlus,FaHouseUser,FaRegStar,FaRegMap,FaSignOutAlt,FaKaaba,FaMoneyCheckAlt,FaSearchLocation } from "react-icons/fa";
 
 const Sidebar = (props) => {
   const navigate = useNavigate();
@@ -30,40 +30,47 @@ const Sidebar = (props) => {
 
   const sidebarList = [
     { key: "0", name: "Dashboard", route: "/dashboard/Stats",icon:<FaHouseUser/> },
-    { key: "1", name: "Users", route: "/dashboard/users",icon:<FaUsers/> },
-    { key: "2", name: "User Location", route: "/dashboard/UserLocations",icon:<FaSearchLocation/> },
-    { key: "3", name: "Family", route: "/dashboard/family",icon:<FaUsers/> },
-    { key: "4", name: "Add User", route: "/dashboard/add-user",icon:<FaUserPlus/> },
-    { key: "5", name: "Add Visa", route: "/dashboard/add-visatype",icon:<FaPassport/> },
-    { key: "6", name: "All Visas", route: "/dashboard/visaTypes",icon:<FaPassport/> },
-    { key: "7", name: "Visa Requests", route: "/dashboard/visa-requests",icon:<FaPassport/> },
-    { key: "8", name: "Groups", route: "/dashboard/groups" ,icon:<FaUsers/> },
-    { key: "9", name: "Add Group", route: "/dashboard/add-group",icon:<FaUsersCog/> },
-    { key: "10", name: "Banners", route: "/dashboard/banners",icon:<FaSign/> },
-    { key: "11", name: "Add Banner", route: "/dashboard/add-banner",icon:<FaSign/> },
-    { key: "12", name: "Videos", route: "/dashboard/videos",icon:<FaVideo/> },
-    { key: "13", name: "Add Video", route: "/dashboard/add-video",icon:<FaYoutube/> },
-    { key: "14", name: "Duas", route: "/dashboard/duas",icon:<FaPrayingHands/> },
-    { key: "15", name: "Add Dua", route: "/dashboard/add-dua",icon:<FaPrayingHands/> },
-    { key: "16", name: "Products", route: "/dashboard/products",icon:<FaQuran/> },
-    { key: "17", name: "Add Product", route: "/dashboard/add-product",icon:<FaClipboardList/> },
-    { key: "18", name: "Hotels", route: "/dashboard/hotels",icon:<FaHotel/> },
-    { key: "19", name: "Add Hotel", route: "/dashboard/add-hotel",icon:<FaHotel/> },
-    { key: "20", name: "Transports", route: "/dashboard/transports",icon:<FaCaravan/> },
-    { key: "21", name: "Add Transport", route: "/dashboard/add-transport",icon:<FaCarAlt/> },
-    { key: "22", name: "Orders", route: "/dashboard/productCarts",icon:<FaShoppingCart/> },
-    { key: "23", name: "Hotel Bookings", route: "/dashboard/hotelbookings",icon:<FaStoreAlt/> },
-    { key: "24", name: "Transport Bookings", route: "/dashboard/transportbookings",icon:<FaTaxi/> },
-    { key: "25", name: "Add Book", route: "/dashboard/add-book",icon:<FaBook/> },
-    { key: "26", name: "Books", route: "/dashboard/books",icon:<FaBookReader/> },
-    { key: "27", name: "Book Requests", route: "/dashboard/book-requests",icon:<FaFolderPlus/> },
-    { key: "28", name: "Add HolyPlaces", route: "/dashboard/holyplaces",icon:<FaKaaba/> },
-    { key: "29", name: "Transanctions", route: "/dashboard/Transactions",icon:<FaMoneyCheckAlt/> },
-    { key: "30", name: "Manage Accounts", route: "/dashboard/Accounts",icon:<FaHouseUser/> },
-    { key: "31", name: "Wishlist", route: "/dashboard/wishlists",icon:<FaRegStar/> },
-    { key: "32", name: "Book Hotel", route: "/dashboard/BookHotel",icon:<FaHotel/>  },
-    { key: "33", name: "Book Transport", route: "/dashboard/BookTransport",icon:<FaCaravan/> },
-    { key: "34", name: "Logout", route: "/", logout: true,icon:<FaSignOutAlt/> },
+    { key: "1", name: "Users", route: "/dashboard/users",icon:<FaUserAlt/> },
+    { key: "2", name: "Add User", route: "/dashboard/add-user",icon:<FaUserPlus/> },
+    { key: "3", name: "User Location", route: "/dashboard/UserLocations",icon:<FaSearchLocation/> },
+    { key: "4", name: "Family", route: "/dashboard/family",icon:<FaUsers/> },
+    { key: "5", name: "Add Admin", route: "/dashboard/add-admin",icon:<FaUserPlus/> },
+    { key: "6", name: "Staff", route: "/dashboard/Staff",icon:<FaUsers/> },
+    { key: "7", name: "Add Visa", route: "/dashboard/add-visatype",icon:<FaPassport/> },
+    { key: "8", name: "All Visas", route: "/dashboard/visaTypes",icon:<FaPassport/> },
+    { key: "9", name: "Visa Requests", route: "/dashboard/visa-requests",icon:<FaPassport/> },
+    { key: "10", name: "Groups", route: "/dashboard/groups" ,icon:<FaUsers/> },
+    { key: "11", name: "Add Group", route: "/dashboard/add-group",icon:<FaUsersCog/> },
+    { key: "12", name: "Banners", route: "/dashboard/banners",icon:<FaSign/> },
+    { key: "13", name: "Add Banner", route: "/dashboard/add-banner",icon:<FaSign/> },
+    { key: "14", name: "Videos", route: "/dashboard/videos",icon:<FaVideo/> },
+    { key: "15", name: "Add Video", route: "/dashboard/add-video",icon:<FaYoutube/> },
+    { key: "16", name: "Duas", route: "/dashboard/duas",icon:<FaPrayingHands/> },
+    { key: "17", name: "Add Dua", route: "/dashboard/add-dua",icon:<FaPrayingHands/> },
+    { key: "16", name: "Guides", route: "/dashboard/guides",icon:<FaRegMap/> },
+    { key: "17", name: "Add Guide", route: "/dashboard/add-guide",icon:<FaRegMap/> },
+    
+    { key: "18", name: "Products", route: "/dashboard/products",icon:<FaQuran/> },
+    { key: "19", name: "Add Product", route: "/dashboard/add-product",icon:<FaClipboardList/> },
+    { key: "20", name: "Hotels", route: "/dashboard/hotels",icon:<FaHotel/> },
+    { key: "21", name: "Add Hotel", route: "/dashboard/add-hotel",icon:<FaHotel/> },
+    { key: "22", name: "Transports", route: "/dashboard/transports",icon:<FaCaravan/> },
+    { key: "23", name: "Add Transport", route: "/dashboard/add-transport",icon:<FaCarAlt/> },
+    { key: "24", name: "Orders", route: "/dashboard/productCarts",icon:<FaShoppingCart/> },
+    { key: "25", name: "Hotel Bookings", route: "/dashboard/hotelbookings",icon:<FaStoreAlt/> },
+    { key: "26", name: "Transport Bookings", route: "/dashboard/transportbookings",icon:<FaTaxi/> },
+    { key: "27", name: "Add Book", route: "/dashboard/add-book",icon:<FaBook/> },
+    { key: "28", name: "Books", route: "/dashboard/books",icon:<FaBookReader/> },
+    { key: "29", name: "Book Requests", route: "/dashboard/book-requests",icon:<FaFolderPlus/> },
+    { key: "30", name: "Add HolyPlaces", route: "/dashboard/holyplaces",icon:<FaKaaba/> },
+    { key: "31", name: "Transanctions", route: "/dashboard/Transactions",icon:<FaMoneyCheckAlt/> },
+    { key: "32", name: "Manage Accounts", route: "/dashboard/Accounts",icon:<FaHouseUser/> },
+    { key: "33", name: "Wishlist", route: "/dashboard/wishlists",icon:<FaRegStar/> },
+    { key: "34", name: "Book Hotel", route: "/dashboard/BookHotel",icon:<FaHotel/>  },
+    { key: "35", name: "Book Transport", route: "/dashboard/BookTransport",icon:<FaCaravan/> },
+    { key: "36", name: "Profile", route: "/dashboard/edit-profile",icon:<FaUserPlus/> },
+
+    { key: "37", name: "Logout", route: "/", logout: true,icon:<FaSignOutAlt/> },
   ];
 
   return (
@@ -95,7 +102,7 @@ const Sidebar = (props) => {
               className="object-contain h-20 self-start rounded-xl"
             />
             <h2 className="text-3xl text-white break-all">
-              Karwan-e-Hasnath Team
+            Karwan-e-Hasnaat Team
             </h2>
 
           </div>
@@ -145,7 +152,7 @@ const Sidebar = (props) => {
                 className="object-contain h-24 self-start rounded-xl"
               />
               <h2 className="text-base text-white break-all">
-                Karwan-e-Hasnath
+              Karwan-e-Hasnaat
               </h2>
             </div>
           </div>

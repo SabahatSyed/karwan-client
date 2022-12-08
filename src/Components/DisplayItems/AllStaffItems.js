@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import userService from "../../api/users.api";
-import Backdrop2 from "../UI/BackdropModal2";
+import userService from "../../api/admin.api";
 
 import Backdrop from "../UI/BackdropModal";
 import Button from "../UI/Button";
@@ -10,24 +9,12 @@ const AllUsersItems = ({ user, check, setCheck }) => {
   // console.log(user);
   let navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [showimgModal, setimgShowModal] = useState(false);
 
   return (
     <>
       <div className="grid grid-cols-12 place-items-center text-center">
         <div className="col-span-7 lg:col-span-8 flex place-self-start text-left font-semibold text-primary">
-          <div className="grid place-items-center mr-4">
-            {user?.profilePic ? (
-              <img
-                src={user?.profilePic}
-                alt=""
-                onClick={()=>setimgShowModal(true)}
-                className="object-cover h-14 w-14 rounded-full"
-              />
-            ) : (
-              <div className="h-14 w-14 bg-slate-300 rounded-full" />
-            )}
-          </div>
+          
           <div>
               <p >{user?.userName}</p>
 
@@ -52,6 +39,16 @@ const AllUsersItems = ({ user, check, setCheck }) => {
              </p>
              
            </div>
+           <div className="flex" >
+             
+             <p className="text-sm font-normal opacity-70">
+               Designation:
+             </p>
+               <p className="text-sm font-normal opacity-70">
+               {user?.Designation}
+             </p>
+             
+           </div>
             </div>
 
 
@@ -59,7 +56,7 @@ const AllUsersItems = ({ user, check, setCheck }) => {
         <div className="col-span-2 lg:col-span-1">
           <Button
             onClick={() => {
-              navigate(`/dashboard/edit-user/${user._id}`);
+              navigate(`/dashboard/edit-admin/${user._id}`);
             }}
           >
             Edit
@@ -97,23 +94,6 @@ const AllUsersItems = ({ user, check, setCheck }) => {
           </Button>
         </div>
       </Backdrop>
-      <Backdrop2
-        
-        show={showimgModal}
-        onClick={() => setimgShowModal(false)}
-      >
-        <div className="self-end" style={{marginRight:"20%"}}>
-            {user?.profilePic ? (
-              <img
-                src={user?.profilePic}
-                alt=""
-                className="object-cover h-80 w-80 rounded-full"
-              />
-            ) : (
-              <div className="h-14 w-14 bg-slate-300 rounded-full" />
-            )}
-          </div>
-      </Backdrop2>
     </>
   );
 };

@@ -46,7 +46,6 @@ const Users = React.forwardRef(() => {
     });
   
   const { data: allUsers, isloading } = useFetch("/get-users", check);
-  const date = currentDate();
   const [autocompleteValue1, setAutocompleteValue1] = useState(null);
   const [autocompleteValue2, setAutocompleteValue2] = useState(null);
   const [autocompleteValue3, setAutocompleteValue3] = useState(null);
@@ -63,10 +62,13 @@ const Users = React.forwardRef(() => {
   const [selectedUser,setSelectedUser]=useState([])
   const [filtersarr,setfarr]=useState([])
   const [Rows, setRows] = useState([]);
-  
+  const [currentDate,setcurrentDate]=useState()
+
   
   useEffect(() => {
-    
+    const date = new Date();
+    setcurrentDate ( `${date.getDate()} / ${date.getMonth()+1} / ${date.getFullYear()}`);
+ 
   },[print]);  
   useEffect(() => {
     
@@ -347,12 +349,13 @@ const filterbySearch=(data,fil,filt)=>{
   }
   
  }
+
   return (
     <Card>
       <div className="w-[90%] max-w-5xl h-full mx-auto">
         <header className="flex flex-col gap-2 justify-start mb-14 ">
           <h1 className="text-4xl">All Users</h1>
-          <p className="text-gray-400">{date}</p>
+          <p className="text-gray-400">{currentDate}</p>
         </header>
         {/* Table */}
         {/* Header */}

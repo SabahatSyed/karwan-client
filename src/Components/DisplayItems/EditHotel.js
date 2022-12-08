@@ -10,7 +10,7 @@ import useFetchDoc from "../../hooks/useFetchDoc";
 import InputFile from "../UI/InputFile";
 import TextArea from "../UI/TextArea";
 import hotelService from "../../api/hotelService.api";
-
+import { Select,MenuItem } from "@mui/material";
 const EditProduct = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
@@ -26,17 +26,24 @@ const EditProduct = () => {
   );
   const [Rooms,setRooms]=useState(product?.Room)
   const [distances,setdistances]=useState(product?.distances)
-
+    const [selected,setSelected]=useState([])
   console.log(product);
   console.log(Rooms);
   useEffect(() => {
     setRooms(product?.Room)
     setdistances(product?.distances)
+    console.log("prods",product?.Facilities)
+    var a=[]
+    product?.Facilities?.map((item)=>{
+      a.push(item)
+    })
+   setSelected(a)
   }, [product]);
   const encodeFileBase64 = (file) => {
     var reader = new FileReader();
     var array=[]
     var arr=file
+  
     setflag(true)
       if (file) {
          reader.readAsDataURL(file);
@@ -73,7 +80,7 @@ const EditProduct = () => {
           }
           values.Room=Rooms
           values.distances=distances
-          
+          values.Facilities=selected
           console.log("sdaca",values)
       await hotelService.updateHotel(productId, values);
      navigate("/dashboard/hotels");
@@ -107,14 +114,23 @@ const EditProduct = () => {
               onChange={formik.handleChange}
               value={formik.values.Description}
             />
-            <TextArea
-            rows={3}
-            type="text"
-            label="Facilities:"
-            name="Facilities"
-            onChange={formik.handleChange}
-            value={formik.values.Facilities}
-          />
+            <label className="text-secondary font-semibold">Facilities:</label>
+
+<Select
+multiple
+value={selected}
+onChange={(e)=>setSelected([...e.target.value])}
+ labelledBy="Select"
+>
+<MenuItem value={"AC"}>AC</MenuItem>
+            <MenuItem value={"Television"}>Television</MenuItem>
+            <MenuItem value={"Prayer Mat"}>Prayer Mat</MenuItem>
+            <MenuItem value={"Breakfast/Dinner"}>Breakfast/Dinner</MenuItem>
+            <MenuItem value={"MiniFridge"}>MiniFridge</MenuItem>
+            <MenuItem value={"RoomService"}>RoomService</MenuItem>
+
+
+</Select>
           <Input
               width="full"
               type="text"

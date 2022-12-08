@@ -1,18 +1,16 @@
-import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../Components/UI/Card";
 import Spinner from "../Components/UI/Spinner";
 import useFetch from "../hooks/useFetch";
 import currentDate from "../utility/currentDate";
-import VideosItems from "../Components/DisplayItems/VideosItems";
-import ProductCartsItems from "../Components/DisplayItems/HotelBookingHistoryItems";
-import { useNavigate, useParams } from "react-router-dom";
+import BooksItems from "../Components/DisplayItems/BooksItems";
+import SupplicationItems from "../Components/DisplayItems/GuidesItems";
 
-const AllProductCarts = () => {
+const AllSupplications = () => {
   const [check, setCheck] = useState(false);
-  const  productCartId  = useParams();
 
-  const { data: productCarts, isloading } = useFetch(
-    "/get-hotelbookings",
+  const { data: supplications, isloading } = useFetch(
+    "/get-guides",
     check
   );
   const [currentDate,setcurrentDate]=useState()
@@ -20,19 +18,18 @@ const AllProductCarts = () => {
     const date = new Date();
     setcurrentDate ( `${date.getDate()} / ${date.getMonth()+1} / ${date.getFullYear()}`);
   },[])
-
   return (
     <Card>
       <div className="w-[90%] max-w-5xl h-full mx-auto">
         <header className="flex flex-col gap-2 justify-start mb-14 ">
-          <h1 className="text-4xl">All Hotel Bookings History</h1>
+          <h1 className="text-4xl">All Guides</h1>
           <p className="text-gray-400">{currentDate}</p>
         </header>
         {/* Table */}
         {/* Header */}
         <div className="flex flex-col px-0">
           <div className="flex items-center justify-between">
-            <p className="text-lg font-bold text-secondary">Hotel Booking History</p>
+            <p className="text-lg font-bold text-secondary">Guides</p>
             <svg
               className="fill-gray-400 object-contain h-10 cursor-pointer"
               xmlns="http://www.w3.org/2000/svg"
@@ -56,21 +53,15 @@ const AllProductCarts = () => {
             md:overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-300"
             >
               <div className="flex flex-col gap-y-7 ">
-                {productCarts.map((item) => {
-                  console.log("dsgfjs",item)
-                  console.log("dsgfjs",productCartId)
-
-                  if(item.user_id?._id==productCartId.productId){
-                    return (
-                      <ProductCartsItems
-                        key={item._id}
-                        productCart={item}
-                        check={check}
-                        setCheck={setCheck}
-                      />
-                    );
-                  }
-                  
+                {supplications.map((item) => {
+                  return (
+                    <SupplicationItems
+                      key={item._id}
+                      supplication={item}
+                      check={check}
+                      setCheck={setCheck}
+                    />
+                  );
                 })}
               </div>
             </div>
@@ -81,4 +72,4 @@ const AllProductCarts = () => {
   );
 };
 
-export default AllProductCarts;
+export default AllSupplications;

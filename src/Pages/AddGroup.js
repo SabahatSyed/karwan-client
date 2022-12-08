@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Input from "../Components/UI/Input";
@@ -6,9 +6,9 @@ import Card from "../Components/UI/Card";
 
 import Button from "../Components/UI/Button";
 import Backdrop from "../Components/UI/BackdropModal";
-
+//import {MultiSelect} from "react-multi-select-component"
 import { useFormik } from "formik";
-
+import { MenuItem, Select } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 import groupService from "../api/groups.api";
 import AllMembersItems from "../Components/DisplayItems/AllMembersItems";
@@ -19,10 +19,21 @@ const AddGroup = () => {
   const [showModal, setShowModal] = useState(false);
   const [group, setGroup] = useState([]);
   const [isMember, setIsMember] = useState(false);
+  const [selected, setSelected] = useState([]);
 
+  const [options,setoptions]=useState()
   const { data: users } = useFetch(`/get-users`, true);
   // console.log(users);
-
+  useEffect(()=>{
+     
+    var a=[]
+    users?.map((item)=>{
+      a.push({label:item.email,value:item.email,id:item._id})
+    })
+    setoptions(a)
+    
+    
+  },[users])
   console.log(group);
   const formik = useFormik({
     initialValues: {
@@ -53,17 +64,25 @@ const AddGroup = () => {
             <Input
               type="text"
               name="groupName"
+            
               label="Group:"
               onChange={formik.handleChange}
               value={formik.values.groupName}
             />
-            <Input
-              type="text"
-              name="memberEmail"
-              label="Group Member (e-mail)"
-              onChange={formik.handleChange}
-              value={formik.values.memberEmail}
-            />
+            <Select
+            multiple
+        value={selected}
+        onChange={(e)=>setSelected([...e.target.value])}
+             labelledBy="Select"
+          >
+            {users?.map((item)=>(
+            <MenuItem value={item._id}>{item.email}</MenuItem>
+
+            ))
+          
+            }
+          </Select>
+            
             <div className="shadow-sm ">
               <h2 className="flex items-center justify-between mb-3">
                 <p className="text-secondary text-xl font-semibold">
@@ -72,31 +91,15 @@ const AddGroup = () => {
                 <Button
                   type={"button"}
                   onClick={() => {
-                    if(!formik.values.memberEmail.includes("@") || !formik.values.memberEmail.includes(".com")){
-                      alert("Enter Valid Email")
-                    }
-                    else{
-                      setIsMember(false);
-
-                      let preMember = group?.filter(
-                        (member) => member?.email !== formik.values.memberEmail
-                      );
-                      console.log("memberEmail", group);
-
-                        let filteredUser = users?.find(
-                          (user) => user?.email == formik.values.memberEmail+""
-                        );
-                        console.log("filtered user",filteredUser)
-                        if(filteredUser){
-                          
-                        setGroup([...group, filteredUser])}
-                        else{
-                          alert("Member does not exist")
+                      var a=[]
+                      selected?.map((it)=>{
+                        const ans=users.find((item)=>item._id==it)
+                        if(ans){
+                          a.push(ans)
                         }
-                        console.log(group);
-                     
-                    }
-                    
+                      })
+                      setGroup(a)
+
                   }}
                 >
                   <div className="text-base p-1">Add User</div>
@@ -126,7 +129,12 @@ const AddGroup = () => {
               type="button"
               onClick={() => {
                 console.log(group.members);
-                setShowModal(true);
+                if(group.length<=1){
+                  alert("Need more Members")
+                }
+                else{
+                  setShowModal(true);
+                }
               }}
             >
               <div className="text-base p-1">Add Group</div>

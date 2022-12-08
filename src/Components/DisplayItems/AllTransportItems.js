@@ -27,14 +27,14 @@ const AllProductsItems = ({ product, productCart, setProductCart }) => {
             )}
             </div>
           <div className="flex flex-col gap-2">
-            <p>{product?.Name +" -   "+product?.Facilities}</p>
-            <div className="flex items-center gap-2">
+            <p>{product?.Name}</p>
+            {/*<div className="flex items-center gap-2">
               <p className=" text-[#404852]">Reviews</p>
               <p className=" text-[#404852] self-end">:</p>
               <p className="text-primary font-semibold opacity-70">
                 {product?.reviews}
               </p>
-            </div>
+            </div>*/}
             <div className="flex items-center gap-2">
               <p className=" text-[#404852]">Vehicles</p>
               <p className=" text-[#404852] self-end">:</p>

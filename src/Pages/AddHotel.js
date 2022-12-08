@@ -13,16 +13,19 @@ import GoogleMapReact from 'google-map-react';
 import { async } from "@firebase/util";
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { FaMapMarkerAlt } from "react-icons/fa"
+import { MenuItem, Select } from "@mui/material";
+
 import Spinner from "../Components/UI/Spinner";
 const AnyReactComponent = ({ text }) =><FaMapMarkerAlt/>;
 const AddProduct = () => {
   const navigate = useNavigate();
-
+  const [unit,setunit]=useState('m')
   const [showModal, setShowModal] = useState(false);
   const [productPic, setProductPic] = useState(null);
   const [Rooms,setRooms]=useState([])
   const [flag,setflag]=useState(false)
   const [distances,setdistances]=useState([])
+  const [selected,setSelected]=useState([])
   const [room,setroom]=useState({Type:"",Size:"",id:0,Price:0,availability:[]})
   const [distance,setdistance]=useState({place:"",distance:"",Location:{lat:0.0,lon:0.0}})
   const [fileBase64String, setFileBase64String] = useState("");
@@ -107,11 +110,11 @@ const AddProduct = () => {
       if (
         values.Name &&
         values.Description &&
-        values.Facilities &&
         values.Location 
         ) {
           values.Room=Rooms
           values.distances=distances
+          values.Facilities=selected
           console.log("sdaca",values)
           values.images=fileBase64String
         await hotelService.addHotel(values);
@@ -131,7 +134,44 @@ const AddProduct = () => {
         >
           <h1 className="text-2xl">Add Hotel</h1>
           <section className={`flex flex-col flex-wrap gap-6 `}>
-            
+            <div className="flex items-center gap-6 mr-4">
+              
+            <p className="text-l" style={{fontweight:'bold'}}>Images</p>
+            <label
+        className="block  py-1 px-2 cursor-pointer rounded text-center min-w-[8rem] max-w-[10rem]
+        border-2 border-dashed border-primary 
+        hover:border-3 hover:border-dashed hover:border-primary 
+        transition ease-out duration-1000"
+      >
+        <span className="text-sm">
+          {productPic?.name ? productPic?.name : "Choose image"}
+        </span>
+        <input className="hidden" type="file" name={productPic?.name}  onChange={(e) => {
+                  setProductPic(e.target.files[0])
+                  encodeFileBase64(e.target.files[0]);
+                }} />
+      </label>
+
+      <Button
+          type="button"
+          onClick={() => {
+           }}
+          
+        >
+          Upload
+        </Button>
+        {
+                fileBase64String?
+                <p>Uploaded</p>:
+                flag?
+                <div className="z-30 m-auto mt-20">
+                <Spinner />
+              </div>
+                :
+                <p></p>
+
+              }
+            </div>
             <Input
               width="full"
               type="text"
@@ -149,14 +189,23 @@ const AddProduct = () => {
               onChange={formik.handleChange}
               value={formik.values.Description}
             />
-            <TextArea
-            rows={3}
-            type="text"
-            label="Facilities:"
-            name="Facilities"
-            onChange={formik.handleChange}
-            value={formik.values.Facilities}
-          />
+          <label className="text-secondary font-semibold">Facilities:</label>
+
+            <Select
+            multiple
+        value={selected}
+        onChange={(e)=>setSelected([...e.target.value])}
+             labelledBy="Select"
+          >
+            <MenuItem value={"AC"}>AC</MenuItem>
+            <MenuItem value={"Television"}>Television</MenuItem>
+            <MenuItem value={"Prayer Mat"}>Prayer Mat</MenuItem>
+            <MenuItem value={"Breakfast/Dinner"}>Breakfast/Dinner</MenuItem>
+            <MenuItem value={"MiniFridge"}>MiniFridge</MenuItem>
+            <MenuItem value={"RoomService"}>RoomService</MenuItem>
+
+
+          </Select>
           <Input
               width="full"
               type="text"
@@ -187,34 +236,52 @@ const AddProduct = () => {
             }}
               value={room.id}
             />
-            <label className="text-secondary">Type:</label>
-            <input
-              style={{width:"25%",marginLeft:20,marginRight:20}}
-              type="text"
-              label="Type:"
-              name="room.Type"
-              onChange={(e) => {
-                var value={Type:e.target.value}
-                setroom(shopCart => ({
-                ...shopCart,
-                ...value
-              }))}}
-              value={room.Type}
-            />
-            <label className="text-secondary">Size:</label>
-            <input
-              style={{width:"25%",marginLeft:20,marginRight:20}}
-              type="text"
-              label="Size:"
-              name="room.Size"
-              onChange={(e) => {
-                var value={Size:e.target.value}
-                setroom(shopCart => ({
-                ...shopCart,
-                ...value
-              }))}}
-              value={room.Size}
-            />
+            
+<label className="text-secondary">Type:</label>
+            <select
+            style={{width:"25%",marginLeft:20,marginRight:20}}
+            type="text"
+            label="Type:"
+            name="room.Type"
+            onChange={(e) => {
+              var value={Type:e.target.value}
+              setroom(shopCart => ({
+              ...shopCart,
+              ...value
+            }))}}
+            value={room.Type}
+              >
+                <option value={""}></option>
+
+                <option value={"1 Bed"}>1 Bed</option>
+                <option value={"2 Bed"}>2 Bed</option>
+                <option value={"3 Bed"}>3 Bed</option>
+                
+              </select>
+
+          <label className="text-secondary">Size:</label>
+            <select
+            style={{width:"25%",marginLeft:20,marginRight:20}}
+            type="text"
+            label="Size:"
+            name="room.Size"
+            onChange={(e) => {
+              var value={Size:e.target.value}
+              setroom(shopCart => ({
+              ...shopCart,
+              ...value
+            }))}}
+            value={room.Size}
+              >
+                <option value={""}></option>
+
+                <option value={"250 sqft"}>250 sqft</option>
+                <option value={"500 sqft"}>500 sqft</option>
+                <option value={"750 sqft"}>750 sqft</option>
+                <option value={"1000 sqft"}>1000 sqft</option>
+                <option value={"1250 sqft"}>1250 sqft</option>
+              </select>
+            
             <label className="text-secondary">Price:</label>
             <input
               style={{width:"25%",marginLeft:20,marginRight:20}}
@@ -257,7 +324,7 @@ const AddProduct = () => {
             <label className="text-secondary" style={{marginRight:10,fontWeight:'bold'}}>Size: </label>
             <p style={{marginRight:20}}>{item.Size}</p>
             <label className="text-secondary" style={{marginRight:10,fontWeight:'bold'}}>Price: </label>
-            <p style={{marginRight:20}}>{item.Price}</p>
+            <p style={{marginRight:20}}>{item.Price+" riyal"}</p>
             <Button
               type="button" onClick={()=>
               setRooms(Rooms.filter((it,index)=>index!=ind))}>
@@ -337,6 +404,7 @@ const AddProduct = () => {
               value={distance.place}
                 style={{width:"10%",marginLeft:20,marginRight:20}}
               >
+                <option value={""}></option>
                 <option value={"Kabba"}>Kaaba</option>
                 <option value={"Jamarat"}>Jamarat</option>
                 <option value={"Jannatulmala"}>Jannatulmala</option>
@@ -360,14 +428,37 @@ const AddProduct = () => {
               }))}}
               value={distance.distance}
             />
-            
+            <select
+            style={{width:"8%",marginLeft:20,marginRight:20}}
+            type="text"
+            label="Unit:"
+            name="unit"
+            onChange={(e) => {
+              setunit(e.target.value)}}
+            value={unit}
+              >
+                <option value={"m"}>m</option>
+                <option value={"km"}>km</option>
+              </select>
           
             <Button
               type="button" onClick={()=>{
+                const d={distance:distance.distance+unit}
+
+                console.log("dd",d)
+                var variable=distance
+                variable.distance=distance.distance+unit
+
+                  setdistance(shopCart => ({
+                    ...shopCart,
+                    ...d
+                  }))
                 if(distances.length>0){
-                  setdistances([...distances,distance]);
+                  
+                setdistances([...distances,variable]);
                 }
-                else{setdistances([distance])}
+                else{
+                setdistances([variable])}
                 console.log("saa",distances)
                 setdistance({place:"",distance:"",Location:{lat:0.0,lon:0.0}})
               }}>
@@ -390,46 +481,9 @@ const AddProduct = () => {
             </div>
             ))}
 
-            <div className="flex items-center gap-6 mr-4">
-              
-            <p className="text-l" style={{fontweight:'bold'}}>Images</p>
-            <label
-        className="block  py-1 px-2 cursor-pointer rounded text-center min-w-[8rem] max-w-[10rem]
-        border-2 border-dashed border-primary 
-        hover:border-3 hover:border-dashed hover:border-primary 
-        transition ease-out duration-1000"
-      >
-        <span className="text-sm">
-          {productPic?.name ? productPic?.name : "Choose image"}
-        </span>
-        <input className="hidden" type="file" name={productPic?.name}  onChange={(e) => {
-                  setProductPic(e.target.files[0])
-                  encodeFileBase64(e.target.files[0]);
-                }} />
-      </label>
-
-      <Button
-          type="button"
-          onClick={() => {
-           }}
-          
-        >
-          Upload
-        </Button>
-        {
-                fileBase64String?
-                <p>Uploaded</p>:
-                flag?
-                <div className="z-30 m-auto mt-20">
-                <Spinner />
-              </div>
-                :
-                <p></p>
-
-              }
-            </div>
+            
            
-        {(fileBase64String!="" && formik.values.Description!="" && formik.values.Facilities!="" && formik.values.Location!="" && formik.values.Name!="")?
+        {(fileBase64String!="" && formik.values.Description!="" && selected!="" && formik.values.Location!="" && formik.values.Name!="")?
           
           <div className="flex justify-end gap-8 mt-4">
             <Button

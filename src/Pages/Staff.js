@@ -1,38 +1,32 @@
-import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../Components/UI/Card";
+import AllUsersItems from "../Components/DisplayItems/AllStaffItems";
 import Spinner from "../Components/UI/Spinner";
 import useFetch from "../hooks/useFetch";
 import currentDate from "../utility/currentDate";
-import VideosItems from "../Components/DisplayItems/VideosItems";
-import ProductCartsItems from "../Components/DisplayItems/HotelBookingHistoryItems";
-import { useNavigate, useParams } from "react-router-dom";
+import userService from "../api/videos.api";
 
-const AllProductCarts = () => {
+const Users = () => {
   const [check, setCheck] = useState(false);
-  const  productCartId  = useParams();
 
-  const { data: productCarts, isloading } = useFetch(
-    "/get-hotelbookings",
-    check
-  );
+  const { data: allUsers, isloading } = useFetch("/get-admin", check);
   const [currentDate,setcurrentDate]=useState()
   useEffect(()=>{
     const date = new Date();
     setcurrentDate ( `${date.getDate()} / ${date.getMonth()+1} / ${date.getFullYear()}`);
   },[])
-
   return (
     <Card>
       <div className="w-[90%] max-w-5xl h-full mx-auto">
         <header className="flex flex-col gap-2 justify-start mb-14 ">
-          <h1 className="text-4xl">All Hotel Bookings History</h1>
+          <h1 className="text-4xl">All Users</h1>
           <p className="text-gray-400">{currentDate}</p>
         </header>
         {/* Table */}
         {/* Header */}
         <div className="flex flex-col px-0">
           <div className="flex items-center justify-between">
-            <p className="text-lg font-bold text-secondary">Hotel Booking History</p>
+            <p className="text-lg font-bold text-secondary">Users</p>
             <svg
               className="fill-gray-400 object-contain h-10 cursor-pointer"
               xmlns="http://www.w3.org/2000/svg"
@@ -56,21 +50,15 @@ const AllProductCarts = () => {
             md:overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-300"
             >
               <div className="flex flex-col gap-y-7 ">
-                {productCarts.map((item) => {
-                  console.log("dsgfjs",item)
-                  console.log("dsgfjs",productCartId)
-
-                  if(item.user_id?._id==productCartId.productId){
-                    return (
-                      <ProductCartsItems
-                        key={item._id}
-                        productCart={item}
-                        check={check}
-                        setCheck={setCheck}
-                      />
-                    );
-                  }
-                  
+                {allUsers.map((item) => {
+                  return (
+                    <AllUsersItems
+                      key={item?._id}
+                      user={item}
+                      check={check}
+                      setCheck={setCheck}
+                    />
+                  );
                 })}
               </div>
             </div>
@@ -81,4 +69,4 @@ const AllProductCarts = () => {
   );
 };
 
-export default AllProductCarts;
+export default Users;

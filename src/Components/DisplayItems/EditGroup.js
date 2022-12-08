@@ -12,13 +12,15 @@ import AllMembersItems from "./AllMembersItems";
 import useFetchDoc from "../../hooks/useFetchDoc";
 import useFetch from "../../hooks/useFetch";
 import groupService from "../../api/groups.api";
-
+import { MenuItem, Select } from "@mui/material";
 const EditGroup = () => {
   const navigate = useNavigate();
   const { groupId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [group, setGroup] = useState([]);
   const [isMember, setIsMember] = useState(false);
+  const [selected, setSelected] = useState([]);
+
   const { docData: selectedGroup, isloading } = useFetchDoc(
     `/get-group/${groupId}`
   );
@@ -28,6 +30,11 @@ const EditGroup = () => {
 
   useEffect(() => {
     setGroup(selectedGroup?.groupMembers);
+    var a=[]
+    selectedGroup?.groupMembers?.map((item)=>{
+      a.push(item._id)
+    })
+    setSelected(a)
   }, [selectedGroup?.groupMembers]);
 
   console.log(group);
@@ -73,13 +80,19 @@ const EditGroup = () => {
               onChange={formik.handleChange}
               value={formik.values.groupName}
             />
-            <Input
-              type="text"
-              name="memberEmail"
-              label="Group Member (e-mail)"
-              onChange={formik.handleChange}
-              value={formik.values.memberEmail}
-            />
+            <Select
+            multiple
+        value={selected}
+        onChange={(e)=>setSelected([...e.target.value])}
+             labelledBy="Select"
+          >
+            {users?.map((item)=>(
+            <MenuItem value={item._id}>{item.email}</MenuItem>
+
+            ))
+          
+            }
+          </Select>
 
             {/* <Input
               disabled
@@ -149,7 +162,13 @@ const EditGroup = () => {
               type="button"
               onClick={() => {
                 // console.log(group.members);
-                setShowModal(true);
+                if(group.length<=1){
+                  alert("Need more Members")
+                }
+                else{
+                  setShowModal(true);
+
+                }
               }}
             >
               <div className="text-base p-1">Update</div>

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Card from "../Components/UI/Card";
+import Card from "../Components/UI/Card2";
 import Chart from "../Components/UI/Chart";
 import useFetch from "../hooks/useFetch";
 import Spinner from "../Components/UI/Spinner";
-
+import { FaUsers,FaUserPlus,FaPassport,FaUsersCog,FaSign,FaVideo,FaYoutube,FaPrayingHands,FaQuran
+  ,FaClipboardList,FaHotel,FaCaravan,FaCarAlt,FaShoppingCart,FaStoreAlt,FaTaxi,FaBook,FaBookReader,
+  FaFolderPlus,FaHouseUser,FaRegStar,FaSignOutAlt,FaKaaba,FaMoneyCheckAlt,FaSearchLocation } from "react-icons/fa";
+  
 
 
 const Dashboard = () => {
@@ -86,7 +89,7 @@ const Dashboard = () => {
 
 useEffect(()=>{
   const date = new Date();
-  setcurrentDate ( `${date.getDate()} / ${date.getMonth()} / ${date.getFullYear()}`);
+  setcurrentDate ( `${date.getDate()} / ${date.getMonth()+1} / ${date.getFullYear()}`);
   sethajj(visas?.filter((item)=>item.visaType=="hajj"))
   setumrah(visas?.filter((item)=>item.visaType=="umrah"))
   var a=0,b=0,c=0;
@@ -96,24 +99,29 @@ useEffect(()=>{
     }
   })
   setosales(a)
+  console.log("b",a)
+
   hotelbookings?.map((item)=>{
     if((item?.Total)){
       b=b+item?.Total
     }
    })
+   console.log("b",b)
    sethsales(b)
    transportbookings?.map((item)=>{
     if((item?.Total)){
       c=c+item?.Total
     }   })
    settsales(c)
+   console.log("b",c)
+
 },[bookRequests])
  
   return (
     <Card >
       <div className="w-[90%] max-w-5xl h-full mx-auto" >
         <header className="flex flex-col gap-2 justify-start md:min-h-max ">
-          <h1 className="text-4xl">Overview</h1>
+          <h1 className="text-4xl text-white">Overview</h1>
           <p className="text-gray-400">{currentDate}</p>
         </header>
         <main className="mt-8 flex flex-col gap-4">
@@ -123,18 +131,22 @@ useEffect(()=>{
                 <div
                   className="flex flex-col gap-6 items-center py-10 lg:py-6 col-span-4 sm:col-span-2 lg:col-span-1 rounded-xl border-2 border-gray-500 text-center
                   hover:border-primary hover:ring-1 hover:ring-primary 
-                  transition ease-out duration-300"
+                  transition ease-out duration-300 bg-boxes1"
                 >
-                  <p className="text-2xl ">Total Users</p>
+                  <div className="flex">
+                  <FaUsers style={{color:"white",marginTop:10,marginRight:5}}/>
+                  <p className="text-2xl text-gray-400 ">Total Users</p>
+                  </div>
+                  
                   {isloading ? (
             <div className="z-30 m-auto mt-20">
               <Spinner />
             </div>
           ) : <>
-                  <p className="text-2xl">{users?.length}</p>
+                  <p className="text-2xl text-gray-400">{users?.length}</p>
                   <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'darkgreen'}}>
-                  <p className="text-xl">Total Groups: </p>
-                  <p className="text-xl">{groups?.length}</p>
+                  <p className="text-xl text-gray-400">Total Groups: </p>
+                  <p className="text-xl text-gray-400">{groups?.length}</p>
                   </div>
                   </>
                   }
@@ -142,9 +154,12 @@ useEffect(()=>{
                 <div
                   className="flex flex-col gap-6 items-center py-10 lg:py-6 col-span-4 sm:col-span-2 lg:col-span-1 rounded-xl border-2 border-gray-500 text-center
                   hover:border-primary hover:ring-1 hover:ring-primary 
-                  transition ease-out duration-300"
+                  transition ease-out duration-300 bg-boxes2"
                 >
-                  <p className="text-2xl ">Total Visas</p>
+                  <div className="flex">
+                  <FaPassport style={{color:"black",marginTop:10,marginRight:5}}/>
+                  <p className="text-2xl  ">Total Visas</p>
+                  </div>
                   {isloading ? (
             <div className="z-30 m-auto mt-20">
               <Spinner />
@@ -152,14 +167,14 @@ useEffect(()=>{
           ) : 
           <div>
             
-                  <p className="text-2xl">{visas?.length}</p>
-                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'darkgreen'}}>
-                  <p className="text-xl">Hajj Applicants: </p>
-                  <p className="text-xl">{hajj?.length}</p>
+                  <p className="text-2xl ">{visas?.length}</p>
+                  <div style={{display:'flex',flexDirection:'row',marginTop:20,}}>
+                  <p className="text-xl ">Hajj Applicants: </p>
+                  <p className="text-xl ">{hajj?.length}</p>
                   </div>
-                  <div style={{display:'flex',flexDirection:'row',color:'darkgreen'}}>
+                  <div style={{display:'flex',flexDirection:'row'}}>
                   <p className="text-xl">Umrah Applicants: </p>
-                  <p className="text-xl">{" "+umrah?.length}</p>
+                  <p className="text-xl ">{" "+umrah?.length}</p>
                   </div>
                   </div>
                   }
@@ -167,9 +182,12 @@ useEffect(()=>{
             <div
                   className="flex flex-col gap-6 items-center py-10 lg:py-6 col-span-4 sm:col-span-2 lg:col-span-1 rounded-xl border-2 border-gray-500 text-center
                   hover:border-primary hover:ring-1 hover:ring-primary 
-                  transition ease-out duration-300"
+                  transition ease-out duration-300 bg-boxes1  "
                 >
-                  <p className="text-2xl ">Total items</p>
+                  <div className="flex">
+                  <FaKaaba style={{color:"white",marginTop:10,marginRight:5}}/>
+                  <p className="text-2xl text-gray-400 ">Total items</p>
+                  </div>
                   {isloading ? (
             <div className="z-30 m-auto mt-20">
               <Spinner />
@@ -177,21 +195,21 @@ useEffect(()=>{
           ) : 
           <div>
             
-                  <div style={{display:'flex',flexDirection:'row',color:'darkgreen'}}>
-                  <p className="text-xl">Books: </p>
-                  <p className="text-xl">{books?.length}</p>
+                  <div style={{display:'flex',flexDirection:'row'}}>
+                  <p className="text-xl text-gray-400">Books: </p>
+                  <p className="text-xl text-gray-400">{books?.length}</p>
                   </div>
-                  <div style={{display:'flex',flexDirection:'row',color:'darkgreen'}}>
-                  <p className="text-xl">Videos: </p>
-                  <p className="text-xl">{" "+videos?.length}</p>
+                  <div style={{display:'flex',flexDirection:'row'}}>
+                  <p className="text-xl text-gray-400">Videos: </p>
+                  <p className="text-xl text-gray-400">{" "+videos?.length}</p>
                   </div>
-                  <div style={{display:'flex',flexDirection:'row',color:'darkgreen'}}>
-                  <p className="text-xl">Banners: </p>
-                  <p className="text-xl">{" "+banners?.length}</p>
+                  <div style={{display:'flex',flexDirection:'row'}}>
+                  <p className="text-xl text-gray-400">Banners: </p>
+                  <p className="text-xl text-gray-400">{" "+banners?.length}</p>
                   </div>
-                  <div style={{display:'flex',flexDirection:'row',color:'darkgreen'}}>
-                  <p className="text-xl">BookRequests: </p>
-                  <p className="text-xl">{" "+bookRequests?.length}</p>
+                  <div style={{display:'flex',flexDirection:'row'}}>
+                  <p className="text-xl text-gray-400">BookRequests: </p>
+                  <p className="text-xl text-gray-400">{" "+bookRequests?.length}</p>
                   </div>
                   </div>
                   }
@@ -199,9 +217,12 @@ useEffect(()=>{
             <div
                   className="flex flex-col gap-6 items-center py-10 lg:py-6 col-span-4 sm:col-span-2 lg:col-span-1 rounded-xl border-2 border-gray-500 text-center
                   hover:border-primary hover:ring-1 hover:ring-primary 
-                  transition ease-out duration-300"
+                  transition ease-out duration-300 bg-boxes2"
                 >
+                  <div className="flex">
+                  <FaShoppingCart style={{color:"black",marginTop:10,marginRight:5}}/>
                   <p className="text-2xl ">Total Products</p>
+                  </div>
                   {isloading ? (
             <div className="z-30 m-auto mt-20">
               <Spinner />
@@ -210,12 +231,12 @@ useEffect(()=>{
           <div>
             
                   <p className="text-2xl">{products?.length}</p>
-                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'darkgreen',marginTop:20,color:'darkgreen'}}>
-                  <p className="text-xl">Orders: </p>
-                  <p className="text-xl">{" "+orders?.length}</p>
+                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'black',marginTop:20}}>
+                  <p className="text-xl ">Orders: </p>
+                  <p className="text-xl ">{" "+orders?.length}</p>
                   </div>
-                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'darkgreen',marginTop:20,color:'darkgreen'}}>
-                  <p className="text-xl">Order Sales: </p>
+                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'black',marginTop:20}}>
+                  <p className="text-xl ">Order Sales: </p>
                   <p className="text-xl">{" "+osales}</p>
                   </div>
                   </div>
@@ -224,9 +245,12 @@ useEffect(()=>{
             <div
                   className="flex flex-col gap-6 items-center py-10 lg:py-6 col-span-4 sm:col-span-2 lg:col-span-1 rounded-xl border-2 border-gray-500 text-center
                   hover:border-primary hover:ring-1 hover:ring-primary 
-                  transition ease-out duration-300"
+                  transition ease-out duration-300 bg-boxes1"
                 >
-                  <p className="text-2xl ">Total Hotel</p>
+                  <div className="flex">
+                  <FaHotel style={{color:"white",marginTop:10,marginRight:5}}/>
+                  <p className="text-2xl text-gray-400 ">Total Hotel</p>
+                  </div>
                   {isloading ? (
             <div className="z-30 m-auto mt-20">
               <Spinner />
@@ -234,14 +258,14 @@ useEffect(()=>{
           ) : 
           <div>
             
-                  <p className="text-2xl">{hotels?.length}</p>
-                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'darkgreen'}}>
-                  <p className="text-xl">Hotel Bookings: </p>
-                  <p className="text-xl">{" "+hotelbookings?.length}</p>
+                  <p className="text-2xl text-gray-400">{hotels?.length}</p>
+                  <div style={{display:'flex',flexDirection:'row',marginTop:20}}>
+                  <p className="text-xl text-gray-400">Hotel Bookings: </p>
+                  <p className="text-xl text-gray-400">{" "+hotelbookings?.length}</p>
                   </div>
-                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'darkgreen',marginTop:20,color:'darkgreen'}}>
-                  <p className="text-xl">Sales: </p>
-                  <p className="text-xl">{" "+hsales}</p>
+                  <div style={{display:'flex',flexDirection:'row',marginTop:20,marginTop:20}}>
+                  <p className="text-xl text-gray-400">Sales: </p>
+                  <p className="text-xl text-gray-400">{" "+hsales}</p>
                   </div>
                   </div>
                   }
@@ -249,9 +273,12 @@ useEffect(()=>{
             <div
                   className="flex flex-col gap-6 items-center py-10 lg:py-6 col-span-4 sm:col-span-2 lg:col-span-1 rounded-xl border-2 border-gray-500 text-center
                   hover:border-primary hover:ring-1 hover:ring-primary 
-                  transition ease-out duration-300"
+                  transition ease-out duration-300 bg-boxes2"
                 >
+                  <div className="flex">
+                  <FaCaravan style={{color:"black",marginTop:10,marginRight:5}}/>
                   <p className="text-2xl ">Total Transport</p>
+                  </div>
                   {isloading ? (
             <div className="z-30 m-auto mt-20">
               <Spinner />
@@ -259,12 +286,12 @@ useEffect(()=>{
           ) : 
           <div>
             
-                  <p className="text-2xl">{transports?.length}</p>
-                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'darkgreen'}}>
+                  <p className="text-2xl ">{transports?.length}</p>
+                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'black'}}>
                   <p className="text-xl">Transport Bookings: </p>
                   <p className="text-xl">{" "+transportbookings?.length}</p>
                   </div>
-                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'darkgreen',marginTop:20,color:'darkgreen'}}>
+                  <div style={{display:'flex',flexDirection:'row',marginTop:20,color:'black',marginTop:20}}>
                   <p className="text-xl">Sales: </p>
                   <p className="text-xl">{"Rs. "+tsales}</p>
                   </div>

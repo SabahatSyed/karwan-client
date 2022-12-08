@@ -6,7 +6,7 @@ import Search from "../Components/Searchbar";
 
 const JobsApplied = () => {
   const date = new Date();
-  const currentDate = `${date.getDate()} / ${date.getMonth()} / ${date.getFullYear()}`;
+  const currentDate = `${date.getDate()} / ${date.getMonth()+1} / ${date.getFullYear()}`;
   return (
     <Card>
       <header className="flex flex-col gap-2 justify-start md:min-h-max ">

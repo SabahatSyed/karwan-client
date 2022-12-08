@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
-import supplicationService from "../api/supplications";
+import supplicationService from "../api/guides";
 import Card from "../Components/UI/Card";
 import Input from "../Components/UI/Input";
 import Button from "../Components/UI/Button";
@@ -15,15 +15,19 @@ const AddSupplication = () => {
 
   const formik = useFormik({
     initialValues: {
-      supplicationTitle: "",
-      supplication: "",
+      guideTitle: "",
+      guide: "",
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
       console.log(values);
-      if (values.supplication && values.supplicationTitle) {
-        await supplicationService.addSupplication(values);
-        navigate("/dashboard/duas");
+      if (values.guide && values.guideTitle) {
+        const res=await supplicationService.addSupplication(values);
+        console.log("sfdfs",res)
+        if(!res){
+          alert("already exists")
+        }
+        navigate("/dashboard/guides");
       }
     },
   });
@@ -35,23 +39,23 @@ const AddSupplication = () => {
           onSubmit={formik.handleSubmit}
           className="flex flex-col flex-wrap gap-6 px-6 lg:px-14"
         >
-          <h1 className="text-2xl">Add Dua</h1>
+          <h1 className="text-2xl">Add Guide</h1>
           <section className={`flex flex-col flex-wrap gap-6`}>
             <Input
               width="full"
               type="text"
-              name="supplicationTitle"
+              name="guideTitle"
               label="Title:"
-              value={formik.values.supplicationTitle}
+              value={formik.values.guideTitle}
               onChange={formik.handleChange}
             />
             <TextArea
               width="full"
               type="text"
-              name="supplication"
-              label="Dua"
+              name="guide"
+              label="Guide"
               onChange={formik.handleChange}
-              value={formik.values.supplication}
+              value={formik.values.guide}
             />
           </section>
           <div className="flex justify-end gap-8 mt-4">
@@ -61,7 +65,7 @@ const AddSupplication = () => {
                 setShowModal(true);
               }}
             >
-              <div className="text-base p-1">Add Dua</div>
+              <div className="text-base p-1">Add Guide</div>
             </Button>
           </div>
           <Backdrop
@@ -69,7 +73,7 @@ const AddSupplication = () => {
             show={showModal}
             onClick={() => setShowModal(false)}
           >
-            Are you sure you want to Add Dua?
+            Are you sure you want to Add Guide?
             <div className="self-end">
               <Button type={"submit"} onClick={() => setShowModal(false)}>
                 OK

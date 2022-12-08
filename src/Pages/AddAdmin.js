@@ -6,25 +6,21 @@ import Card from "../Components/UI/Card";
 import Button from "../Components/UI/Button";
 import Backdrop from "../Components/UI/BackdropModal";
 import InputFile from "../Components/UI/InputFile";
-import userService from "../api/users.api";
+import userService from "../api/admin.api";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
-import showpass from "../password/showpassword.png"
-import hidepass from "../password/hidepassword.jpg"
-
 import Spinner from "../Components/UI/Spinner";
+import Select from "../Components/UI/Select";
 const AddUser = () => {
-  const [isRevealPwd, setIsRevealPwd] = useState(false);
-
   const navigate = useNavigate();
   const [error,seterror]=useState()
   const [showModal, setShowModal] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
   const [flag,setflag]=useState(false)
-  const [profilePic, setProfilePic] = useState(null);
-  const [fileBase64String, setFileBase64String] = useState("");
+  
   const validationSchema = yup.object({
     userName:yup.string("Enter Your Name").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
+
     email: yup.string("Enter your email")
        .email("Enter a valid email")
       .required("Email is required"),
@@ -33,23 +29,7 @@ const AddUser = () => {
     cnic:yup.string("Enter CNIC").required("A phone number is required").matches(/^[0-9]{5}-[0-9]{7}-[0-9]$/, "Wrong CNIC")
   });
 
-  
-  const encodeFileBase64 = (file) => {
-    var reader = new FileReader();
-    if (file) {
-      setflag(true)
-
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        var Base64 = reader.result;
-        console.log(Base64);
-        setFileBase64String(Base64);
-      };
-      reader.onerror = (error) => {
-        console.log("error: ", error);
-      };
-    }
-  };
+ 
 
   const formik = useFormik({
     initialValues: {
@@ -57,27 +37,26 @@ const AddUser = () => {
       email: "",
       contact: "",
       address: "",
-      profilePic: "",
       password: "",
-      cnic:""
+      cnic:"",
+      Designation:""
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
 
     onSubmit: async (values) => {
       console.log(values);
-      values.profilePic=fileBase64String
       if (
         values.userName &&
         values.email &&
         values.contact &&
         values.address &&
         values.password &&
-        values.profilePic &&
-        values.cnic
+        values.cnic && 
+        values.Designation
       ) {
         await userService.addUser(values);
-        navigate("/dashboard/users");
+        navigate("/dashboard/Staff");
       }
     },
   });
@@ -91,41 +70,7 @@ const AddUser = () => {
         >
           <h1 className="text-2xl">Add User</h1>
           <section className={`flex flex-col flex-wrap gap-6`}>
-            <div className="flex items-center gap-6 mr-4">
-              {fileBase64String ? (
-                <img
-                  src={fileBase64String}
-                  alt=""
-                  className="object-cover h-14 w-14 rounded-full"
-                />
-              ) : (
-                <div className="h-14 w-14 bg-slate-300 rounded-full" />
-              )}
-          
-              <InputFile
-                name="imagePath"
-                imageName={profilePic?.name}
-                onChange={(e) => {
-                  setProfilePic(e.target.files[0]);
-                }}
-                onUpload={() => {
-                  encodeFileBase64(profilePic);
-                }}
-              >
-                Upload
-              </InputFile>
-              {
-                fileBase64String?
-                <p>Uploaded</p>:
-                flag?
-                <div className="z-30 m-auto mt-20">
-                <Spinner />
-              </div>:
-                <p></p>
-
-              }
-            </div>
-            
+           
             <TextField
                 margin="normal"
                 fullWidth
@@ -186,24 +131,24 @@ const AddUser = () => {
                 fullWidth
                 id="Password"
                 label="Password"
-                type={isRevealPwd ? "text" : "password"}
               name="password"
               onChange={formik.handleChange}
               value={formik.values.password}
               />
-             <img
-              style={{
-                width: "30px",
-                margin: "0 0 0 0px",
-                
-              }}
-          title={isRevealPwd ? "Hide password" : "Show password"}
-          src={isRevealPwd ? hidepass : showpass}
-          onClick={() => setIsRevealPwd(prevState => !prevState)}
-        />
+             <Select
+                type="text"
+                label="Designation:"
+                name="Designation"
+                onChange={formik.handleChange}
+                value={formik.values.Designation}
+              >
+                <option value={""}></option>
+                <option value={"Staff"}>Admin</option>
+                <option value={"Staff"}>Staff</option>
+          </Select>
            
           </section>
-{(fileBase64String!="" && formik.values.userName!="" && formik.values.address!="" && formik.values.contact!="" && formik.values.password!="" && formik.values.email!="")?
+{( formik.values.userName!="" && formik.values.address!="" && formik.values.contact!="" && formik.values.password!="" && formik.values.email!="" && formik.values.Designation!="")?
           <div className="flex justify-end gap-8 mt-4">
             <Button
               type="button"

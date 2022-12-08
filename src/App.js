@@ -1,7 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import Users from "./Pages/Users";
+import Staff from "./Pages/Staff";
+
 import MainPage from "./Pages/MainPage";
 import EditUser from "./Components/DisplayItems/EditUser";
+import EditAdmin from "./Components/DisplayItems/EditAdmin";
+import EditProfile from "./Components/DisplayItems/EditProfile"
 import Login from "./Pages/Login";
 import AddVideo from "./Pages/AddVideo";
 import AllVideos from "./Pages/AllVideos";
@@ -26,6 +30,7 @@ import EditTransportBooking from "./Components/DisplayItems/Edittransportbooking
 import AllSupplications from "./Pages/AllSupplications";
 import EditSupplication from "./Components/DisplayItems/EditSupplication";
 import AddUser from "./Pages/AddUser";
+import AddAdmin from "./Pages/AddAdmin";
 import AllProducts from "./Pages/AllProducts";
 import AllHotels from "./Pages/AllHotels";
 import AllTransports from "./Pages/AllTransport";
@@ -60,14 +65,23 @@ import Location from "./Pages/AllUsersLocation"
 import AddVisatype from "./Pages/AddVisatype"
 import AllVisatypes from "./Pages/AllVisatypes"
 import EditVisaType from "./Components/DisplayItems/EditVisaType"
+import ResetPassword from "./Pages/ResetPassword";
+import AddGuide from "./Pages/AddGuide"
+import AllGuides from "./Pages/AllGuides"
+import EditGuide from "./Components/DisplayItems/EditGuides"
 function App() {
   return (
     <>
       <Routes>
         <Route exact path="/" element={<Login />} />
+        <Route path="/ResetPassword/:token" element={<ResetPassword />} />
+
         {true && (
           <Route path="/dashboard" element={<MainPage />}>
             <Route index element={<AllVideos />} />
+            <Route path="/dashboard/Staff" element={<Staff />} />
+            <Route path="/dashboard/guides" element={<AllGuides />} />
+
             <Route path="/dashboard/videos" element={<AllVideos />} />
             <Route path="/dashboard/duas" element={<AllSupplications />} />
             <Route path="/dashboard/books" element={<AllBooks />} />
@@ -114,6 +128,8 @@ function App() {
             />
             <Route path="/dashboard/add-visatype" element={<AddVisatype />} />
             <Route path="/dashboard/add-video" element={<AddVideo />} />
+            <Route path="/dashboard/add-admin" element={<AddAdmin />} />
+
             <Route path="/dashboard/add-user" element={<AddUser />} />
             <Route path="/dashboard/add-banner" element={<AddBanner />} />
             <Route path="/dashboard/add-product" element={<AddProduct />} />
@@ -121,9 +137,14 @@ function App() {
             <Route path="/dashboard/add-transport" element={<AddTransport />} />
             <Route path="/dashboard/add-book" element={<AddBook />} />
             <Route path="/dashboard/add-dua" element={<AddSupplication />} />
+            <Route path="/dashboard/add-guide" element={<AddGuide />} />
+
             <Route path="/dashboard/add-group" element={<AddGroup />} />
             <Route path="/dashboard/edit-family/:userId" element={<EditFamily />} />
             <Route path="/dashboard/edit-user/:userId" element={<EditUser />} />
+            <Route path="/dashboard/edit-admin/:userId" element={<EditAdmin/>} />
+            <Route path="/dashboard/edit-profile" element={<EditProfile/>} />
+
             <Route path="/dashboard/edit-visa/:userId" element={<EditVisaType />} />
 
             <Route path="/dashboard/edit-book/:bookId" element={<EditBook />} />
@@ -158,6 +179,10 @@ function App() {
             <Route
               path="/dashboard/edit-dua/:supplicationId"
               element={<EditSupplication />}
+            />
+            <Route
+              path="/dashboard/edit-guide/:supplicationId"
+              element={<EditGuide />}
             />
             <Route
               path="/dashboard/edit-group/:groupId"

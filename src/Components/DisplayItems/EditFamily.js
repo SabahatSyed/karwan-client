@@ -28,14 +28,16 @@ const EditProduct = () => {
     setRooms(product?.family)
   }, [product]);
   const [profilePic, setProfilePic] = useState(null);
- 
+
   const formik = useFormik({
     initialValues: {
       userName: product?.userName,
       family:product?.family,
       
     },
+
     enableReinitialize: true,
+
     onSubmit: async (values) => {
       values.family=Rooms
           console.log("sdaca",values)
@@ -55,12 +57,13 @@ const EditProduct = () => {
           <section className={`flex flex-col flex-wrap gap-6 `}>
             
             <Input
+              disbaled
               width="full"
               type="text"
               label="Name:"
               name="userName"
-              onChange={formik.handleChange}
               value={formik.values.userName}
+              
             />
             
           
@@ -73,6 +76,7 @@ const EditProduct = () => {
               label="name:"
               name="room.name"
               onChange={(e) => {
+                
                 var value={name:e.target.value}
                 setroom(shopCart => ({
                 ...shopCart,
@@ -117,7 +121,6 @@ const EditProduct = () => {
                 }))}}
                 value={room.relation}
               >
-                
                 <option value={"Wife"}>Wife</option>
                 <option value={"Husband"}>Husband</option>
                 <option value={"Sister"}>Sister</option>
@@ -130,9 +133,6 @@ const EditProduct = () => {
                 <option value={"Granddaughter"}>Granddaughter</option>
                 <option value={"Grandfather"}>Grandfather</option>
                 <option value={"Grandmother"}>Grandmother</option>
-
-
-                
               </select>
               <label className="text-secondary">CNIC:</label>
 
@@ -148,18 +148,23 @@ const EditProduct = () => {
                     ...shopCart,
                     ...value
                   }))
-                  
-                
-                
                 
                 }}
               value={room.cnic}
             />
             <Button
               type="button" onClick={()=>{
+                if(!room.name.match(/^[aA-zZ\s]+$/)){
+                  alert("Only Alphabets Allowed in Name")
+                }
+                
                 if(!room.cnic.match(/^[0-9]{5}-[0-9]{7}-[0-9]$/)){
                   alert("wrong CNIC")
-                }else{
+                }
+                if(!room.cnic.match(/^[0-9]{5}-[0-9]{7}-[0-9]$/) || !room.name.match(/^[aA-zZ\s]+$/)){
+
+                }
+                else{
                   if(Rooms.length>0){
                     setRooms([...Rooms,room]);
                   }

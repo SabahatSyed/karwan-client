@@ -12,6 +12,8 @@ import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import GoogleMapReact from 'google-map-react';
 import { async } from "@firebase/util";
 import Spinner from "../Components/UI/Spinner";
+import { MenuItem, Select } from "@mui/material";
+
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ const AddProduct = () => {
   const [room,setroom]=useState({Type:"",id:0,Price:0,availability:[]})
   const [fileBase64String, setFileBase64String] = useState("");
   const [flag,setflag]=useState(false)
+  const [selected,setSelected]=useState([])
   const defaultProps = {
     center: {
       lat: 33.6844,
@@ -57,13 +60,13 @@ const AddProduct = () => {
     onSubmit: async (values) => {
       console.log(values);
       if (
-        values.Name &&
-        values.Facilities 
-        ) {
+        values.Name
+                ) {
           console.log("sda",fileBase64String)
           
           values.Vehicle=Rooms
           values.images=fileBase64String
+          values.Facilities=selected
           console.log("sdaca",values)
 
         await transportService.addHotel(values);
@@ -91,15 +94,24 @@ const AddProduct = () => {
               onChange={formik.handleChange}
               value={formik.values.Name}
             />
-            
-            <TextArea
-            rows={3}
-            type="text"
-            label="Facilities:"
-            name="Facilities"
-            onChange={formik.handleChange}
-            value={formik.values.Facilities}
-          />
+           <label className="text-secondary font-semibold">Facilities:</label>
+
+            <Select
+            multiple
+        value={selected}
+        onChange={(e)=>setSelected([...e.target.value])}
+             labelledBy="Select"
+          >
+            <MenuItem value={"AC"}>AC</MenuItem>
+            <MenuItem value={"Heater"}>Heater</MenuItem>
+            <MenuItem value={"Prayer Mat"}>Prayer Mat</MenuItem>
+            <MenuItem value={"Pickup from Hotel"}>Pickup from Hotel</MenuItem>
+            <MenuItem value={"Dropoff to holyplaces"}>Dropoff to holyplaces</MenuItem>
+            <MenuItem value={"Pickup from Airport"}>Pickup from Airport</MenuItem>
+            <MenuItem value={"Dropoff to Hotel"}>Dropoff to Hotel</MenuItem>
+
+
+          </Select>
           
       <label className="text-secondary font-semibold">Vehicle:</label>
       <div style={{display:'flex',flexDirection:'row'}}>
@@ -122,20 +134,31 @@ const AddProduct = () => {
               }))}}}
               value={room.id}
             />
-            <label className="text-secondary">Type:</label>
-            <input
-              style={{width:"25%",marginLeft:20,marginRight:20}}
-              type="text"
-              label="Type:"
-              name="room.Type"
-              onChange={(e) => {
-                var value={Type:e.target.value}
-                setroom(shopCart => ({
-                ...shopCart,
-                ...value
-              }))}}
-              value={room.Type}
-            />
+
+<label className="text-secondary">Type:</label>
+            <select
+            style={{width:"25%",marginLeft:20,marginRight:20}}
+            type="text"
+            label="Type:"
+            name="room.Type"
+            onChange={(e) => {
+              var value={Type:e.target.value}
+              setroom(shopCart => ({
+              ...shopCart,
+              ...value
+            }))}}
+            value={room.Type}
+              >
+                <option value={""}></option>
+
+                <option value={"Van"}>Van</option>
+                <option value={"Car"}>Car</option>
+                <option value={"Hiace"}>HIACE</option>
+                <option value={"Bus"}>Bus</option>
+
+                
+              </select>
+            
             
             <label className="text-secondary">Price:</label>
             <input
@@ -144,11 +167,17 @@ const AddProduct = () => {
               label="Price:"
               name="room.Price"
               onChange={(e) => {
+                if(!isNaN(e.target.value)){
                 var value={Price:e.target.value}
                 setroom(shopCart => ({
                 ...shopCart,
                 ...value
-              }))}}
+              }))}
+              else{
+                alert("Enter Number")
+              }
+            
+            }}
               value={room.Price}
             />
             
@@ -175,7 +204,7 @@ const AddProduct = () => {
             <p style={{marginRight:20}}>{item.Type}</p>
             
             <label className="text-secondary" style={{marginRight:10,fontWeight:'bold'}}>Price: </label>
-            <p style={{marginRight:20}}>{item.Price}</p>
+            <p style={{marginRight:20}}>{item.Price+" riyal"}</p>
             <Button
               type="button" onClick={()=>
               setRooms(Rooms.filter((it,index)=>index!=ind))}>
@@ -239,7 +268,7 @@ const AddProduct = () => {
         />
       </GoogleMapReact>
               </div>*/}
-                      {(fileBase64String!="" && formik.values.Facilities!=""  && formik.values.Name!="")?
+                      {(fileBase64String!="" && selected!=[]  && formik.values.Name!="")?
 
           <div className="flex justify-end gap-8 mt-4">
             <Button

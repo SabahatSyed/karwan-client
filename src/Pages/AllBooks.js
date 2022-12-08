@@ -9,14 +9,18 @@ const AllBooks = () => {
   const [check, setCheck] = useState(false);
 
   const { data: books, isloading } = useFetch("/get-books", check);
-  const date = currentDate();
+  const [currentDate,setcurrentDate]=useState()
+  useEffect(()=>{
+    const date = new Date();
+    setcurrentDate ( `${date.getDate()} / ${date.getMonth()+1} / ${date.getFullYear()}`);
+  },[])
 
   return (
     <Card>
       <div className="w-[90%] max-w-5xl h-full mx-auto">
         <header className="flex flex-col gap-2 justify-start mb-14 ">
           <h1 className="text-4xl">All Books</h1>
-          <p className="text-gray-400">{date}</p>
+          <p className="text-gray-400">{currentDate}</p>
         </header>
         {/* Table */}
         {/* Header */}

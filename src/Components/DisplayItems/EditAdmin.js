@@ -5,10 +5,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import Backdrop from "../UI/BackdropModal";
-
+import Select from "../UI/Select";
 import useFetchDoc from "../../hooks/useFetchDoc";
 import useUser from "../../hooks/useUser";
-import userService from "../../api/users.api";
+import userService from "../../api/admin.api";
 import * as yup from "yup";
 
 const EditUser = () => {
@@ -16,7 +16,7 @@ const EditUser = () => {
   const { userId } = useParams();
 
   const { docData: selectedUser, isloading } = useFetchDoc(
-    `/get-user/${userId}`
+    `/get-admin/${userId}`
   );
 
   console.log(selectedUser);
@@ -24,9 +24,7 @@ const EditUser = () => {
   const { updateUser, uploadUserImage, imagePath } = useUser();
   const [profilePic, setProfilePic] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  
   const validationSchema = yup.object({
-    userName:yup.string("Enter Your Name").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
     email: yup.string("Enter your email")
        .email("Enter a valid email")
       .required("Email is required"),
@@ -34,14 +32,15 @@ const EditUser = () => {
     .required("A phone number is required"),
     cnic:yup.string("Enter CNIC").required("A phone number is required").matches(/^[0-9]{5}-[0-9]{7}-[0-9]$/, "Wrong CNIC")
   });
+
   const formik = useFormik({
     initialValues: {
       userName: selectedUser?.userName,
       email: selectedUser?.email,
       contact: selectedUser?.contact,
       address: selectedUser?.address,
-      profilePic: selectedUser?.profilePic,
-      cnic:selectedUser?.cnic
+      cnic:selectedUser?.cnic,
+      Designation:selectedUser?.Designation
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -49,7 +48,7 @@ const EditUser = () => {
     onSubmit: async (values) => {
       console.log(values);
       await userService.updateUser(userId, values);
-      navigate("/dashboard/users");
+      navigate("/dashboard/Staff");
       // updateUser(values, userId, imagePath);
     },
   });
@@ -66,29 +65,7 @@ const EditUser = () => {
             className={`flex flex-col flex-wrap gap-6 transition-opacity duration-500 ease-out
           ${isloading ? "opacity-50" : "opacity-100"}`}
           >
-            <div className="flex items-center gap-6 mr-4">
-              {formik.values.profilePic ? (
-                <img
-                  src={formik.values.profilePic}
-                  alt=""
-                  className="object-cover h-14 w-14 rounded-full"
-                />
-              ) : (
-                <div className="h-14 w-14 bg-slate-300 rounded-full" />
-              )}
-              {/* <InputFile
-                name="imagePath"
-                imageName={profilePic?.name}
-                onChange={(e) => {
-                  setProfilePic(e.target.files[0]);
-                }}
-                onUpload={() => {
-                  uploadUserImage(profilePic, userId);
-                }}
-              >
-                Upload
-              </InputFile> */}
-            </div>
+           
             <Input
               disabled
               width="full"
@@ -112,8 +89,6 @@ const EditUser = () => {
               name="email"
               onChange={formik.handleChange}
               value={formik.values.email}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
             />
             <Input
               width="full"
@@ -122,8 +97,6 @@ const EditUser = () => {
               name="contact"
               onChange={formik.handleChange}
               value={formik.values.contact}
-              error={formik.touched.contact && Boolean(formik.errors.contact)}
-              helperText={formik.touched.contact && formik.errors.contact}
             />
             <Input
               width="full"
@@ -143,6 +116,17 @@ const EditUser = () => {
               error={formik.touched.cnic && Boolean(formik.errors.cnic)}
               helperText={formik.touched.cnic && formik.errors.cnic}
               />
+              <Select
+                type="text"
+                label="Designation:"
+                name="Designation"
+                onChange={formik.handleChange}
+                value={formik.values.Designation}
+              >
+                <option value={""}></option>
+                <option value={"Staff"}>Admin</option>
+                <option value={"Staff"}>Staff</option>
+          </Select>
             {/* <TextArea
             rows={1}
             type="text"
@@ -165,7 +149,7 @@ const EditUser = () => {
             <Button
               type="button"
               onClick={() => {
-                navigate("/dashboard/users");
+                navigate("/dashboard/Staff");
               }}
             >
               <div className="text-base p-1">Cancel</div>

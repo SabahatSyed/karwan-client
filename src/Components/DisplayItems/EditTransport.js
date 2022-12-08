@@ -10,7 +10,7 @@ import useFetchDoc from "../../hooks/useFetchDoc";
 import InputFile from "../UI/InputFile";
 import TextArea from "../UI/TextArea";
 import hotelService from "../../api/transportService.api";
-
+import { Select,MenuItem } from "@mui/material";
 const EditProduct = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
@@ -22,14 +22,22 @@ const EditProduct = () => {
   const [distance,setdistance]=useState({place:"",distance:""})
   const [fileBase64String, setFileBase64String] = useState("");
   const [flag,setflag]=useState(false)
+  
   const { docData: product, isloading } = useFetchDoc(
     `/get-transport/${productId}`
   );
   const [Rooms,setRooms]=useState(product?.Vehicle)
+  const [selected,setSelected]=useState([])
   console.log(product);
   console.log(Rooms);
   useEffect(() => {
     setRooms(product?.Vehicle)
+    console.log("prods",product?.Facilities)
+    var a=[]
+    product?.Facilities?.map((item)=>{
+      a.push(item)
+    })
+   setSelected(a)
   }, [product]);
   const [profilePic, setProfilePic] = useState(null);
   const encodeFileBase64 = (file) => {
@@ -71,6 +79,8 @@ const EditProduct = () => {
         values.images=fileBase64String
       }
       values.Vehicle=Rooms
+      values.Facilities=selected
+
           console.log("sdaca",values)
       await hotelService.updateHotel(productId, values);
      navigate("/dashboard/transports");
@@ -95,16 +105,24 @@ const EditProduct = () => {
               onChange={formik.handleChange}
               value={formik.values.Name}
             />
-            
-          
-            <TextArea
-            rows={3}
-            type="text"
-            label="Facilities:"
-            name="Facilities"
-            onChange={formik.handleChange}
-            value={formik.values.Facilities}
-          />
+            <label className="text-secondary font-semibold">Facilities:</label>
+
+<Select
+multiple
+value={selected}
+onChange={(e)=>setSelected([...e.target.value])}
+ labelledBy="Select"
+>
+<MenuItem value={"AC"}>AC</MenuItem>
+            <MenuItem value={"Heater"}>Heater</MenuItem>
+            <MenuItem value={"Prayer Mat"}>Prayer Mat</MenuItem>
+            <MenuItem value={"Pickup from Hotel"}>Pickup from Hotel</MenuItem>
+            <MenuItem value={"Dropoff to holyplaces"}>Dropoff to holyplaces</MenuItem>
+            <MenuItem value={"Pickup from Airport"}>Pickup from Airport</MenuItem>
+            <MenuItem value={"Dropoff to Hotel"}>Dropoff to Hotel</MenuItem>
+
+
+</Select>
           
       <label className="text-secondary font-semibold">Vehicle:</label>
       <div style={{display:'flex',flexDirection:'row'}}>

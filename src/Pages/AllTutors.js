@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../Components/Card";
 import AllTutorsItems from "../Components/DisplayItems/AllTutorsItems";
 
@@ -7,7 +7,7 @@ import { tutors } from "../Components/DummyData/tutors";
 
 const AllTutors = () => {
   const date = new Date();
-  const currentDate = `${date.getDate()} / ${date.getMonth()} / ${date.getFullYear()}`;
+  const currentDate = `${date.getDate()} / ${date.getMonth()+1} / ${date.getFullYear()}`;
   return (
     <Card>
       <header className="flex flex-col gap-2 justify-start md:min-h-max ">
